@@ -1,0 +1,40 @@
+<h3 class="text-center mb-4 fw-bold">Welcome Back</h3>
+
+<div *ngIf="errorMessage" class="alert alert-danger py-2" role="alert">
+  {{ errorMessage }}
+</div>
+
+<form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+  <div class="mb-3">
+    <label for="email" class="form-label">Email address</label>
+    <input type="email" id="email" class="form-control" formControlName="email" 
+           [ngClass]="{'is-invalid': loginForm.get('email')?.invalid && loginForm.get('email')?.touched}">
+    <div class="invalid-feedback">Please enter a valid email.</div>
+  </div>
+
+  <div class="mb-4">
+    <label for="password" class="form-label">Password</label>
+    <input type="password" id="password" class="form-control" formControlName="password"
+           [ngClass]="{'is-invalid': loginForm.get('password')?.invalid && (loginForm.get('password')?.dirty || loginForm.get('password')?.touched)}">
+    
+    <div *ngIf="loginForm.get('password')?.hasError('required') && (loginForm.get('password')?.dirty || loginForm.get('password')?.touched)" class="invalid-feedback">
+      Password is required.
+    </div>
+    <div *ngIf="loginForm.get('password')?.hasError('invalidLength') && (loginForm.get('password')?.dirty || loginForm.get('password')?.touched)" class="invalid-feedback">
+      Password must be between 8 and 16 characters.
+    </div>
+    <div *ngIf="loginForm.get('password')?.hasError('weakPassword') && (loginForm.get('password')?.dirty || loginForm.get('password')?.touched)" class="invalid-feedback">
+      Must contain at least 1 uppercase, 1 lowercase, 1 number, and 1 special character.
+    </div>
+  </div>
+
+  <div class="d-grid mb-3">
+    <button type="submit" class="btn btn-primary rounded-pill fw-bold" [disabled]="loginForm.invalid">
+      Log In
+    </button>
+  </div>
+  
+  <div class="text-center mt-3">
+    <a href="#" class="text-decoration-none text-muted small">Forgot Password?</a>
+  </div>
+</form>

@@ -1,0 +1,18 @@
+<div class="d-flex justify-content-between align-items-start p-3 hover-bg-light cursor-pointer border-bottom w-100" 
+     [routerLink]="['/profile', user.username]">
+  <div class="d-flex overflow-hidden">
+    <img [src]="user.profilePictureUrl" class="rounded-circle me-3" width="48" height="48" alt="profile">
+    <div class="text-truncate">
+      <div class="d-flex flex-column">
+        <span class="fw-bold text-truncate hover-underline">{{ user.firstName }}</span>
+        <span class="text-muted small text-truncate">@{{ user.username }}</span>
+      </div>
+      <p *ngIf="showBio" class="mb-0 mt-1 text-dark small text-wrap">{{ user.bio }}</p>
+    </div>
+  </div>
+  <button class="btn btn-sm rounded-pill fw-bold px-3 ms-2" 
+          [ngClass]="isFollowing ? 'btn-outline-dark' : 'btn-dark'"
+          (click)="toggleFollow($event)">
+    {{ isFollowing ? 'Unfollow' : 'Follow' }}
+  </button>
+</div>

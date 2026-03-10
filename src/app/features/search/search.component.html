@@ -1,0 +1,43 @@
+<div class="border-start border-end min-vh-100 bg-white">
+  <div class="p-3 border-bottom sticky-top bg-white bg-opacity-75 backdrop-blur" style="z-index: 1000;">
+    <div class="bg-light rounded-pill px-3 py-2 d-flex align-items-center border">
+      <i class="bi bi-search text-muted me-2"></i>
+      <input type="text" [formControl]="searchControl" class="form-control border-0 bg-transparent shadow-none p-0" placeholder="Search Twitter">
+    </div>
+  </div>
+
+  <div class="results-container">
+    <ng-container *ngIf="results$ | async as results">
+      
+      <div *ngIf="results.type === 'users'">
+        <div *ngFor="let user of results.data" class="p-3 d-flex align-items-center hover-bg border-bottom cursor-pointer" [routerLink]="['/profile', user.username]">
+          <img [src]="user.profilePictureUrl" class="rounded-circle me-3" width="48" height="48">
+          <div>
+            <p class="fw-bold mb-0">{{ user.firstName }}</p>
+            <p class="text-muted mb-0">@{{ user.username }}</p>
+          </div>
+          <button class="btn btn-dark rounded-pill ms-auto fw-bold px-3">Follow</button>
+        </div>
+      </div>
+
+      <div *ngIf="results.type === 'tweets'">
+        <app-tweet-card *ngFor="let tweet of results.data" [tweet]="tweet"></app-tweet-card>
+      </div>
+
+      <div *ngIf="results.data.length === 0 && searchControl.value" class="p-5 text-center">
+        <h4 class="fw-bold">No results found</h4>
+        <p class="text-muted">Try searching for something else.</p>
+      </div>
+    </ng-container>
+
+    <div *ngIf="!searchControl.value" class="p-5 text-center text-muted opacity-50">
+      <i class="bi bi-search display-1 d-block mb-3"></i>
+      <p>Search for tweets or @people</p>
+    </div>
+  </div>
+</div>
+
+<style>
+  .hover-bg:hover { background-color: rgba(0,0,0,0.03); transition: 0.1s; }
+  .cursor-pointer { cursor: pointer; }
+</style>

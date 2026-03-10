@@ -1,0 +1,69 @@
+<div class="d-flex flex-column flex-shrink-0 p-3 bg-white" style="width: 280px; height: 100vh; position: sticky; top: 0;">
+  
+  <a routerLink="/feed" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none px-2">
+    <i class="bi bi-twitter text-primary" style="font-size: 2rem;"></i>
+  </a>
+
+  <ul class="nav nav-pills flex-column mb-auto mt-4 fs-5 w-100">
+    <li class="nav-item mb-2">
+      <a routerLink="/feed" class="nav-link link-dark fw-bold hover-bg rounded-pill d-inline-block px-4 py-2">
+        <i class="bi bi-house-door-fill me-3"></i> Home
+      </a>
+    </li>
+    <li class="nav-item mb-2">
+      <a routerLink="/search" class="nav-link link-dark hover-bg rounded-pill d-inline-block px-4 py-2">
+        <i class="bi bi-search me-3"></i> Explore
+      </a>
+    </li>
+    <li class="nav-item mb-2">
+      <a routerLink="/notifications" class="nav-link link-dark hover-bg rounded-pill d-inline-block px-4 py-2">
+        <i class="bi bi-bell me-3"></i> Notifications
+      </a>
+    </li>
+    <li class="nav-item mb-2">
+      <a routerLink="/messages" class="nav-link link-dark hover-bg rounded-pill d-inline-block px-4 py-2">
+        <i class="bi bi-envelope me-3"></i> Messages
+      </a>
+    </li>
+    <li class="nav-item mb-2">
+      <a [routerLink]="['/profile', currentUser?.username]" class="nav-link link-dark hover-bg rounded-pill d-inline-block px-4 py-2">
+        <i class="bi bi-person me-3"></i> Profile
+      </a>
+    </li>
+  </ul>
+
+  <button class="btn btn-primary rounded-pill fw-bold fs-5 py-2 w-100 shadow-sm mb-auto" (click)="openCompose()">
+    Tweet
+  </button>
+
+  <div class="mt-auto w-100 mb-3 position-relative">
+    
+    <div *ngIf="isMenuOpen" class="position-absolute bottom-100 start-0 w-100 bg-white rounded-4 dropdown-shadow border mb-2 py-2 z-3">
+      <div class="px-3 py-3 fw-bold hover-bg cursor-pointer text-dark text-truncate" (click)="logout()">
+        Log out @{{ currentUser?.username }}
+      </div>
+    </div>
+
+    <div class="d-flex align-items-center justify-content-between p-2 rounded-pill hover-bg cursor-pointer w-100" 
+         (click)="toggleMenu()">
+      
+      <div class="d-flex align-items-center overflow-hidden" style="max-width: 85%;">
+        <img [src]="currentUser?.profilePictureUrl" class="rounded-circle me-2 object-fit-cover" width="40" height="40" alt="Avatar">
+        
+        <div class="text-truncate">
+          <p class="fw-bold mb-0 text-truncate text-dark" style="font-size: 0.95rem;">{{ currentUser?.firstName }}</p>
+          <p class="text-muted mb-0 text-truncate" style="font-size: 0.85rem;">@{{ currentUser?.username }}</p>
+        </div>
+      </div>
+      
+      <i class="bi bi-three-dots text-dark pe-2"></i>
+    </div>
+
+  </div>
+</div>
+
+<style>
+  .hover-bg:hover { background-color: rgba(0, 0, 0, 0.08); transition: 0.2s; }
+  .cursor-pointer { cursor: pointer; }
+  .dropdown-shadow { box-shadow: 0 0 15px rgba(0,0,0,0.1); }
+</style>

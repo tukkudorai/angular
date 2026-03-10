@@ -1,0 +1,73 @@
+<div class="position-sticky top-0 pt-3" style="height: 100vh; overflow-y: auto;">
+  
+  <div *ngIf="showComposer" class="card border-primary rounded-4 shadow-sm mb-3">
+    <div class="card-header bg-transparent border-0 d-flex justify-content-between align-items-center pb-0 pt-3">
+      <h6 class="fw-bold mb-0">New Tweet</h6>
+      <button class="btn-close small" (click)="layoutService.toggleComposer(false)"></button>
+    </div>
+    <div class="card-body">
+      <textarea class="form-control border-0 focus-ring-none p-0 fs-6 resize-none" 
+                rows="3" placeholder="What's happening?" [(ngModel)]="tweetContent"></textarea>
+      
+      <div *ngIf="selectedMedia" class="position-relative mt-2">
+        <img [src]="selectedMedia" class="img-fluid rounded-3 border">
+        <button class="btn btn-dark btn-sm position-absolute top-0 end-0 m-1 rounded-circle" (click)="removeMedia()">
+          <i class="bi bi-x"></i>
+        </button>
+      </div>
+
+      <hr class="my-2">
+      <div class="d-flex justify-content-between align-items-center">
+        <div class="text-primary fs-5">
+          <input type="file" #fileInput class="d-none" (change)="onFileSelected($event)" accept="image/*">
+          <i class="bi bi-image me-3 cursor-pointer" (click)="triggerUpload()"></i>
+          <i class="bi bi-emoji-smile cursor-pointer"></i>
+        </div>
+        <button class="btn btn-primary btn-sm rounded-pill fw-bold px-3" 
+                [disabled]="!tweetContent.trim() && !selectedMedia" (click)="postTweet()">Tweet</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="mb-3">
+    <div class="input-group">
+      <span class="input-group-text bg-light border-0 rounded-start-pill ps-3 text-muted"><i class="bi bi-search"></i></span>
+      <input type="text" class="form-control bg-light border-0 rounded-end-pill py-2 shadow-none" placeholder="Search Twitter">
+    </div>
+  </div>
+
+  <div class="card bg-light border-0 rounded-4 mb-3">
+    <div class="card-body p-3">
+      <h5 class="fw-bold mb-3">What's happening</h5>
+      <div *ngFor="let item of trending" class="mb-3 item-hover cursor-pointer">
+        <p class="text-muted small mb-0">Trending</p>
+        <p class="fw-bold mb-0">{{ item.hashtag }}</p>
+        <p class="text-muted small mb-0">{{ item.tweetCount }} Tweets</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card bg-light border-0 rounded-4">
+    <div class="card-body p-3">
+      <h5 class="fw-bold mb-3">Who to follow</h5>
+      <div *ngFor="let user of suggestedUsers" class="d-flex justify-content-between align-items-center mb-3">
+        <div class="d-flex align-items-center overflow-hidden">
+          <img [src]="user.profilePictureUrl" class="rounded-circle me-2" width="40" height="40">
+          <div class="text-truncate">
+            <p class="fw-bold mb-0 text-truncate small">{{ user.firstName }}</p>
+            <p class="text-muted extra-small mb-0 text-truncate">@{{ user.username }}</p>
+          </div>
+        </div>
+        <button class="btn btn-dark rounded-pill btn-sm fw-bold px-3">Follow</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .focus-ring-none:focus { box-shadow: none; outline: none; }
+  .resize-none { resize: none; }
+  .cursor-pointer { cursor: pointer; }
+  .extra-small { font-size: 0.75rem; }
+  .item-hover:hover { opacity: 0.8; }
+</style>

@@ -1,0 +1,45 @@
+<div class="p-3 border-bottom">
+  <div class="d-flex">
+    <img [src]="currentUser?.profilePictureUrl" class="rounded-circle me-3" width="50" height="50">
+    <div class="w-100">
+      <textarea 
+        class="form-control border-0 fs-5 shadow-none p-0 mb-2 mt-1" 
+        rows="3" 
+        placeholder="What is happening?!" 
+        [(ngModel)]="content">
+      </textarea>
+      
+      <div class="d-flex justify-content-between align-items-center border-top pt-2">
+        <div class="text-primary fs-5">
+          <input type="file" #fileInput class="d-none" (change)="onMediaSelect($event)" accept="image/*">
+          <i class="bi bi-image me-3 cursor-pointer" title="Add Image" (click)="fileInput.click()"></i>
+          <i class="bi bi-filetype-gif me-3 cursor-pointer" title="Add GIF"></i>
+          <i class="bi bi-emoji-smile cursor-pointer" title="Add Emoji"></i>
+        </div>
+        
+        <div class="d-flex align-items-center">
+          <div *ngIf="mediaPreview" class="me-3 position-relative">
+            <span class="badge bg-success">Media Attached</span>
+            <button class="btn-close btn-close-white position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="padding: 0.2rem;" (click)="mediaPreview = undefined"></button>
+          </div>
+
+          <span class="me-3 small" [ngClass]="{'text-danger fw-bold': isOverLimit, 'text-muted': !isOverLimit}">
+            {{ charCount }} / {{ maxChars }}
+          </span>
+          
+          <button 
+            class="btn btn-primary rounded-pill fw-bold px-4" 
+            [disabled]="(!content.trim() && !mediaPreview) || isOverLimit"
+            (click)="post()">
+            Tweet
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .cursor-pointer { cursor: pointer; }
+  textarea { resize: none; overflow: hidden; }
+</style>

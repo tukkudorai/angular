@@ -1,0 +1,72 @@
+<h3 class="text-center mb-4 fw-bold">Create Account</h3>
+
+<div *ngIf="errorMessage" class="alert alert-danger py-2" role="alert">
+  {{ errorMessage }}
+</div>
+<div *ngIf="successMessage" class="alert alert-success py-2" role="alert">
+  {{ successMessage }}
+</div>
+
+<form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+  
+  <div class="mb-3">
+    <label for="firstName" class="form-label">First Name</label>
+    <input type="text" id="firstName" class="form-control" formControlName="firstName" 
+           [ngClass]="{'is-invalid': registerForm.get('firstName')?.invalid && registerForm.get('firstName')?.touched}">
+    
+    <div *ngIf="registerForm.get('firstName')?.hasError('required') && registerForm.get('firstName')?.touched" class="invalid-feedback">
+      First Name is required.
+    </div>
+    <div *ngIf="registerForm.get('firstName')?.hasError('invalidName') && registerForm.get('firstName')?.touched" class="invalid-feedback">
+      Must be English letters, first letter capitalized.
+    </div>
+  </div>
+
+  <div class="mb-3">
+    <label for="email" class="form-label">Email Address</label>
+    <input type="email" id="email" class="form-control" formControlName="email"
+           [ngClass]="{'is-invalid': registerForm.get('email')?.invalid && registerForm.get('email')?.touched}">
+    
+    <div *ngIf="registerForm.get('email')?.hasError('required') && registerForm.get('email')?.touched" class="invalid-feedback">
+      Email is required.
+    </div>
+    <div *ngIf="registerForm.get('email')?.hasError('invalidDomain') && registerForm.get('email')?.touched" class="invalid-feedback">
+      Must be a valid email format ending in .com, .org, or .in.
+    </div>
+  </div>
+
+  <div class="mb-3">
+    <label for="password" class="form-label">Password</label>
+    <input type="password" id="password" class="form-control" formControlName="password"
+           [ngClass]="{'is-invalid': registerForm.get('password')?.invalid && (registerForm.get('password')?.dirty || registerForm.get('password')?.touched)}">
+    
+    <div *ngIf="registerForm.get('password')?.hasError('required') && (registerForm.get('password')?.dirty || registerForm.get('password')?.touched)" class="invalid-feedback">
+      Password is required.
+    </div>
+    <div *ngIf="registerForm.get('password')?.hasError('invalidLength') && (registerForm.get('password')?.dirty || registerForm.get('password')?.touched)" class="invalid-feedback">
+      Password must be between 8 and 16 characters.
+    </div>
+    <div *ngIf="registerForm.get('password')?.hasError('weakPassword') && (registerForm.get('password')?.dirty || registerForm.get('password')?.touched)" class="invalid-feedback">
+      Must contain at least 1 uppercase, 1 lowercase, 1 number, and 1 special character.
+    </div>
+  </div>
+
+  <div class="mb-4">
+    <label for="confirmPassword" class="form-label">Confirm Password</label>
+    <input type="password" id="confirmPassword" class="form-control" formControlName="confirmPassword"
+           [ngClass]="{'is-invalid': (registerForm.get('confirmPassword')?.touched && registerForm.hasError('mismatch')) || (registerForm.get('confirmPassword')?.invalid && registerForm.get('confirmPassword')?.touched)}">
+    
+    <div *ngIf="registerForm.get('confirmPassword')?.hasError('required') && registerForm.get('confirmPassword')?.touched" class="invalid-feedback">
+      Please confirm your password.
+    </div>
+    <div *ngIf="registerForm.hasError('mismatch') && !registerForm.get('confirmPassword')?.hasError('required') && registerForm.get('confirmPassword')?.touched" class="invalid-feedback">
+      Passwords do not match.
+    </div>
+  </div>
+
+  <div class="d-grid mb-2">
+    <button type="submit" class="btn btn-primary rounded-pill fw-bold" [disabled]="registerForm.invalid">
+      Sign Up
+    </button>
+  </div>
+</form>
